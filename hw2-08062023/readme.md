@@ -125,24 +125,22 @@ _На первой ВМ удаляем контейнер с СУБД. Созд�
 
 ### 1  
 ```
-root@clonealse174cml:~# nmap -sT -p 5432 192.168.186.30
-Starting Nmap 7.70 ( https://nmap.org ) at 2023-07-02 12:51 MSK
-Nmap scan report for 192.168.186.30
-Host is up (0.00097s latency).
+root@postgres14:~# docker rm -f psql-srv
+psql-srv
+root@postgres14:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@postgres14:~#
 
-PORT     STATE SERVICE
-5432/tcp open  postgresql
-MAC Address: 00:0C:29:CF:96:85 (VMware)
 
-Nmap done: 1 IP address (1 host up) scanned in 0.40 seconds
-root@clonealse174cml:~#
-root@clonealse174cml:~#
-root@clonealse174cml:~# psql -h 192.168.186.30 -U postgres
-Пароль пользователя postgres:
-psql (14.5 (Debian 14.5-3+ci21), сервер 15.3 (Debian 15.3-1.pgdg120+1))
-ПРЕДУПРЕЖДЕНИЕ: psql имеет базовую версию 14, а сервер - 15.
-                Часть функций psql может не работать.
-Введите "help", чтобы получить справку.
+root@postgres14:~# docker run --name psql-srv --network psql-net -e POSTGRES_PASSWORD='1!Password' -d -p 5432:5432 -v /var/lib/postgres:/var/lib/postgresql/data postgres:15
+b5ecbcad991e1bb337b385dd68ac8ec288f767768d3a39df2397663914108c7a
+root@postgres14:~#
+
+
+root@postgres14:~# docker run -it --rm --network psql-net --name psql-clnt postgres:15 psql -h psql-srv -U postgres
+Password for user postgres:
+psql (15.3 (Debian 15.3-1.pgdg120+1))
+Type "help" for help.
 
 postgres=# select i from tsttbl;
  i
@@ -150,8 +148,8 @@ postgres=# select i from tsttbl;
  1
  2
  3
-(3 строки)
+(3 rows)
 
 postgres=# \q
-root@clonealse174cml:~#
+root@postgres14:~#
 ```
