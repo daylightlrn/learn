@@ -56,18 +56,6 @@ postgres=# CREATE DATABASE sysbenchtst;
 CREATE DATABASE
 postgres=# ALTER USER POSTGRES WITH ENCRYPTED PASSWORD 'postgres';
 ALTER ROLE
-postgres=# \l+
-                                                                                         Список баз данных
-     Имя     | Владелец | Кодировка | LC_COLLATE  |  LC_CTYPE   | локаль ICU | Провайдер локали |     Права доступа     | Размер  | Табл. пространство |                  Описание
--------------+----------+-----------+-------------+-------------+------------+------------------+-----------------------+---------+--------------------+--------------------------------------------
- pgbenchtst  | postgres | UTF8      | ru_RU.UTF-8 | ru_RU.UTF-8 |            | libc             |                       | 7361 kB | pg_default         |
- postgres    | postgres | UTF8      | ru_RU.UTF-8 | ru_RU.UTF-8 |            | libc             |                       | 7441 kB | pg_default         | default administrative connection database
- sysbenchtst | postgres | UTF8      | ru_RU.UTF-8 | ru_RU.UTF-8 |            | libc             |                       | 7361 kB | pg_default         |
- template0   | postgres | UTF8      | ru_RU.UTF-8 | ru_RU.UTF-8 |            | libc             | =c/postgres          +| 7281 kB | pg_default         | unmodifiable empty database
-             |          |           |             |             |            |                  | postgres=CTc/postgres |         |                    |
- template1   | postgres | UTF8      | ru_RU.UTF-8 | ru_RU.UTF-8 |            | libc             | =c/postgres          +| 7521 kB | pg_default         | default template for new databases
-             |          |           |             |             |            |                  | postgres=CTc/postgres |         |                    |
-(5 строк)
 postgres=# \q
 postgres@alse174cmdt3:~$ pgbench -i -s 141 pgbenchtst -h 192.168.186.173 -p 5432 -U postgres
 Password:
@@ -87,7 +75,7 @@ done in 40.98 s (drop tables 0.00 s, create tables 0.02 s, client-side generate 
 _Убедимся, что размер тестовой БД pgbenchtst 2.1 Гб._ 
 ## 1
 ```
-postgres@alse174cmdt3:~$ psql -c '\c pgbenchtst' -c '\dt++'
+postgres@alse174cmdt3:~$ psql -c '\c pgbenchtst' -c '\dt+'
 Вы подключены к базе данных "pgbenchtst" как пользователь "postgres".
                                          Список отношений
  Схема  |       Имя        |   Тип   | Владелец |  Хранение  | Метод доступа | Размер  | Описание
